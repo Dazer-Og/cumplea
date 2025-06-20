@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¡Saludos Especiales!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      font-family: "Montserrat", sans-serif;
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px;
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      max-width: 90%;
+      width: 100%;
+      margin: 20px;
+      z-index: 10;
+      transform-style: preserve-3d;
+      transition: all 0.5s ease;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 40px 60px;
+        max-width: 500px;
+      }
+    }
+
+    .card:hover {
+      transform: translateY(-10px) rotateY(5deg);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5rem;
+      margin: 0 0 10px 0;
+      color: #ff6f91;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (min-width: 768px) {
+      h1 {
+        font-size: 3.5rem;
+      }
+    }
+
+    p {
+      font-size: 1rem;
+      margin: 0 0 20px 0;
+      line-height: 1.6;
+    }
+
+    @media (min-width: 768px) {
+      p {
+        font-size: 1.2rem;
+        margin: 0 0 30px 0;
+      }
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: linear-gradient(to right, #ff6f91, #ff8e53);
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 111, 145, 0.4);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(255, 111, 145, 0.6);
+    }
+
+    .gift-container {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    @media (max-width: 480px) {
+      .gift-container {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
+    .gift-box {
+      width: 100%;
+      height: 100%;
+      background: #ff6f91;
+      position: relative;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .gift-lid {
+      width: 100%;
+      height: 30%;
+      background: #ff8e53;
+      position: absolute;
+      top: -15%;
+      left: 0;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .gift-bow {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .bow-center {
+      width: 30px;
+      height: 30px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
+
+    .bow-loop {
+      width: 40px;
+      height: 60px;
+      background: #fff;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .bow-loop.left {
+      top: 10px;
+      left: 20px;
+      transform: rotate(-30deg);
+    }
+
+    .bow-loop.right {
+      top: 10px;
+      right: 20px;
+      transform: rotate(30deg);
+    }
+
+    .bow-loop.bottom-left {
+      bottom: 10px;
+      left: 20px;
+      transform: rotate(30deg);
+    }
+
+    .bow-loop.bottom-right {
+      bottom: 10px;
+      right: 20px;
+      transform: rotate(-30deg);
+    }
+
+    .confetti, .balloon {
+      position: fixed;
+      z-index: 1;
+    }
+
+    .confetti {
+      width: 12px;
+      height: 12px;
+      background: var(--c);
+      top: -10px;
+      left: calc(100vw * var(--x));
+      animation: fall linear var(--t) forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(calc(100vh + 20px)) rotate(720deg);
+      }
+    }
+
+    .balloon {
+      width: 60px;
+      height: 80px;
+      background: var(--c);
+      border-radius: 50%;
+      bottom: -100px;
+      left: calc(100vw * var(--x));
+      animation: float linear var(--t) forwards;
+    }
+
+    .balloon:before {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 40px;
+      background: #333;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes float {
+      to {
+        transform: translateY(calc(-100vh - 100px)) rotate(5deg);
+      }
+    }
+
+    .music-player {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .music-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #ff6f91;
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 5px;
+    }
+
+    .music-btn:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="gift-container">
+      <div class="gift-box">
+        <div class="gift-lid"></div>
+        <div class="gift-bow">
+          <div class="bow-center"></div>
+          <div class="bow-loop left"></div>
+          <div class="bow-loop right"></div>
+          <div class="bow-loop bottom-left"></div>
+          <div class="bow-loop bottom-right"></div>
+        </div>
+      </div>
+    </div>
+
+    <h1>¡Feliz Día, <span id="nombre">Boxita 𝓑𝓻𝓲𝓰𝓰𝓲𝓽𝓮</span>!</h1>
+    <p>Espero que hayas tenido un cumpleaños inolvidable. Que cada día después de él esté lleno de la misma alegría, cariño y sorpresas que mereces. ¡Gracias por existir! 💖</p>
+
+    <div class="btn-container">
+      <button id="messageBtn">🌟 Un Mensaje Especial - (Presiona Aquí)</button>
+    </div>
+
+    <div class="music-player">
+      <button class="music-btn" id="playBtn">▶️</button>
+      <button class="music-btn" id="pauseBtn">⏸️</button>
+    </div>
+  </div>
+
+  <audio id="birthdaySong" loop>
+    <source src="GAVIOTA_Chacalon.mp3" type="audio/mpeg">
+    Tu navegador no soporta el elemento de audio.
+  </audio>
+
+  <script>
+    const colores = [
+      "#f94144", "#f3722c", "#f8961e", "#f9844a", "#f9c74f",
+      "#90be6d", "#43aa8b", "#577590", "#277da1", "#ff6f91",
+      "#ff8e53", "#ffb347", "#ffcc5c", "#88d8b0", "#96ceb4"
+    ];
+
+    const mensajeEspecial = "Aunque tu cumpleaños ya pasó, quiero recordarte lo especial que eres. Ojalá cada día te regale una razón para sonreír, y nunca te falten motivos para seguir soñando. 🌟";
+
+    function lanzarConfeti() {
+      for (let i = 0; i < 100; i++) {
+        const div = document.createElement("div");
+        div.classList.add("confetti");
+        div.style.setProperty("--x", Math.random());
+        div.style.setProperty("--c", colores[Math.floor(Math.random() * colores.length)]);
+        div.style.setProperty("--t", `${Math.random() * 3 + 2}s`);
+        document.body.appendChild(div);
+        div.addEventListener("animationend", () => div.remove());
+      }
+    }
+
+    function lanzarGlobos() {
+      for (let i = 0; i < 10; i++) {
+        const balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.style.setProperty("--x", Math.random());
+        balloon.style.setProperty("--c", colores[Math.floor(Math.random() * colores.length)]);
+        balloon.style.setProperty("--t", `${Math.random() * 8 + 5}s`);
+        document.body.appendChild(balloon);
+        balloon.addEventListener("animationend", () => balloon.remove());
+      }
+    }
+
+    function mostrarMensajeEspecial() {
+      alert(mensajeEspecial);
+    }
+
+    const birthdaySong = document.getElementById("birthdaySong");
+    const playBtn = document.getElementById("playBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+
+    playBtn.addEventListener("click", () => birthdaySong.play());
+    pauseBtn.addEventListener("click", () => birthdaySong.pause());
+
+    document.getElementById("messageBtn").addEventListener("click", mostrarMensajeEspecial);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const nombre = urlParams.get('nombre');
+    if (nombre) {
+      document.getElementById("nombre").textContent = nombre;
+    }
+
+    // Animación inicial al cargar
+    setTimeout(() => {
+      lanzarConfeti();
+      lanzarGlobos();
+    }, 500);
+  </script>
+</body>
+</html>
